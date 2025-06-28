@@ -195,6 +195,39 @@ function SpaceTruckLarge() {
   );
 }
 
+function SpaceTruckSmall() {
+  const { scene } = useGLTF('/models/spacetruck_trailer.gltf');
+  return (
+    
+    <primitive object={scene.clone()} rotation={[0, Math.PI/1.7, 0]} position={[0.4, 0.1, 1.8]} receiveShadow castShadow />
+  );
+}
+
+
+
+function CargoC() {
+  const { scene } = useGLTF('/models/containers_C.gltf');
+  return (
+    
+    <primitive object={scene.clone()} rotation={[0, Math.PI/1.7, 0]} position={[0.2, 0.3, 1.85]} receiveShadow castShadow />
+  );
+}
+function CargoC1() {
+  const { scene } = useGLTF('/models/containers_C.gltf');
+  return (
+    
+    <primitive object={scene.clone()} rotation={[0, Math.PI/1.7, 0]} position={[0.7, 0.3, 1.7]} receiveShadow castShadow />
+  );
+}
+function CargoC2() {
+  const { scene } = useGLTF('/models/containers_D.gltf');
+  return (
+    
+    <primitive object={scene.clone()} rotation={[0, Math.PI/1.7, 0]} position={[0.7, 0.5, 1.7]} receiveShadow castShadow />
+  );
+}
+
+
 function Scene() {
   return (
     <>
@@ -263,6 +296,20 @@ function Scene() {
       {/* Additional rocks */}
       <Suspense fallback={null}>
         <RockB />
+      </Suspense>
+      {/* Space truck trailer */}
+      <Suspense fallback={null}>
+        <SpaceTruckSmall />
+      </Suspense>
+      {/* Cargo containers */}
+      <Suspense fallback={null}>
+        <CargoC />
+      </Suspense>
+      <Suspense fallback={null}>
+        <CargoC1 />
+      </Suspense>
+      <Suspense fallback={null}>
+        <CargoC2 />
       </Suspense>
     </>
   );
