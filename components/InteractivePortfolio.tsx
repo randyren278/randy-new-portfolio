@@ -227,6 +227,13 @@ function CargoC2() {
   );
 }
 
+function Lander() {
+  const { scene } = useGLTF('/models/lander_A.gltf');
+  return (
+    
+    <primitive object={scene.clone()} rotation={[Math.PI/6, Math.PI/1.7, Math.PI/50]} position={[1.7, 3.5, 2]} receiveShadow castShadow />
+  );
+}
 
 function Scene() {
   return (
@@ -310,6 +317,10 @@ function Scene() {
       </Suspense>
       <Suspense fallback={null}>
         <CargoC2 />
+      </Suspense>
+      {/* Lander */}
+      <Suspense fallback={null}>
+        <Lander />
       </Suspense>
     </>
   );
