@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense, useRef, useMemo } from 'react';
+import React, { Suspense, useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
@@ -213,7 +213,16 @@ function LanderFlames() {
   const flameRef = useRef<THREE.BufferGeometry>(null);
   const innerFlameRef = useRef<THREE.BufferGeometry>(null);
   const sparkRef = useRef<THREE.BufferGeometry>(null);
-  
+  const [flameVisible, setFlameVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFlameVisible(true);
+    }, 500); 
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   // Create particle systems
   const particleCount = 150;
   const innerParticleCount = 80;
@@ -448,6 +457,8 @@ function LanderFlames() {
     sparkRef.current.attributes.scale.needsUpdate = true;
     sparkRef.current.attributes.opacity.needsUpdate = true;
   });
+
+  if (!flameVisible) return null;
  
   return (
     <group position={[1.7, 3.8, 2.1]} rotation={[Math.PI/6, Math.PI/1.7, Math.PI/50]}>
