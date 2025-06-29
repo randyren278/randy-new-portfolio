@@ -731,7 +731,7 @@ function CameraController({ isModalOpen, onAnimationComplete }: { isModalOpen: b
   useEffect(() => {
     const handleResize = () => {
       const isMobileNow = window.innerWidth <= 768;
-      originalPosition.current = isMobileNow ? [-10, 4, 10] : [-7, 3, 7];
+      originalPosition.current = isMobileNow ? [-10, 5, 10] : [-7, 3, 7];
       
       // If not in modal mode, update camera position immediately
       if (!isModalOpen && !animationComplete.current) {
