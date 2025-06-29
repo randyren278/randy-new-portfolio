@@ -720,9 +720,28 @@ function Lander() {
 
 function CameraController({ isModalOpen, onAnimationComplete }: { isModalOpen: boolean; onAnimationComplete: (completed: boolean) => void }) {
   const { camera } = useThree();
-  const originalPosition = useRef([-7, 3, 7]);
+  
+  // Different starting positions for mobile vs desktop
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const originalPosition = useRef<[number, number, number]>(isMobile ? [-10, 3, 10] : [-7, 3, 7]);
   const targetPosition = [-11, 11, 11]; // Position to view the floating card
   const animationComplete = useRef(false);
+  
+  // Update original position if screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobileNow = window.innerWidth <= 768;
+      originalPosition.current = isMobileNow ? [-10, 4, 10] : [-7, 3, 7];
+      
+      // If not in modal mode, update camera position immediately
+      if (!isModalOpen && !animationComplete.current) {
+        camera.position.set(...originalPosition.current);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [camera, isModalOpen]);
   
   useFrame(() => {
     if (isModalOpen) {
@@ -740,23 +759,25 @@ function CameraController({ isModalOpen, onAnimationComplete }: { isModalOpen: b
         onAnimationComplete(true);
       }
     } else {
-      // Return to original position
-      camera.position.lerp(
-        { x: originalPosition.current[0], y: originalPosition.current[1], z: originalPosition.current[2] }, 
-        0.03
-      );
-      
-      // Reset animation complete flag
+      // Only return to original position if we were previously in modal mode
       if (animationComplete.current) {
-        animationComplete.current = false;
-        onAnimationComplete(false);
+        camera.position.lerp(
+          { x: originalPosition.current[0], y: originalPosition.current[1], z: originalPosition.current[2] }, 
+          0.03
+        );
+        
+        // Check if we're back to original position
+        const distance = camera.position.distanceTo(new THREE.Vector3(...originalPosition.current));
+        if (distance < 0.5) {
+          animationComplete.current = false;
+          onAnimationComplete(false);
+        }
       }
     }
   });
 
   return null;
 }
-
 function AboutModal({
   isOpen,
   onClose,
@@ -1011,6 +1032,10 @@ export default function SimpleEnvironment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  // Check if mobile for initial camera position
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const initialCameraPosition: [number, number, number] = isMobile ? [-10, 3, 10] : [-7, 3, 7];
+
   const handleSoldierClick = () => {
     setIsModalOpen(true);
   };
@@ -1027,7 +1052,7 @@ export default function SimpleEnvironment() {
   return (
     <div className="h-screen w-full relative" style={{ backgroundColor: '#1B1919' }}>
       <Canvas
-        camera={{ position: [-7, 3, 7], fov: 65 }}
+        camera={{ position: initialCameraPosition, fov: 65 }}
         shadows
         gl={{ antialias: true }}
       >
