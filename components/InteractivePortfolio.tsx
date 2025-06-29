@@ -224,9 +224,9 @@ function LanderFlames() {
   }, []);
 
   // Create particle systems
-  const particleCount = 150;
+  const particleCount = 100;
   const innerParticleCount = 80;
-  const sparkCount = 40;
+  const sparkCount = 50;
   
   const particles = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
@@ -587,12 +587,54 @@ function LanderFlames() {
   );
  }
 
-function Lander() {
+ function Lander() {
   const { scene } = useGLTF('/models/lander_A.gltf');
+  const groupRef = useRef<THREE.Group | null>(null);
+  const [hovered, setHovered] = useState(false);
+  
+  useFrame((state) => {
+    if (groupRef.current && hovered) {
+      // Rotate around Y-axis when hovered
+      groupRef.current.rotation.y += 0.01;
+    }
+  });
+  
+  const handlePointerEnter = () => {
+    setHovered(true);
+    document.body.style.cursor = 'pointer';
+  };
+  
+  const handlePointerLeave = () => {
+    setHovered(false);
+    document.body.style.cursor = 'auto';
+  };
+  
   return (
-    <primitive object={scene.clone()} rotation={[Math.PI/6, Math.PI/1.7, Math.PI/50]} position={[1.7, 3.5, 2]} receiveShadow castShadow />
+    <group 
+      ref={groupRef}
+      position={[1.7, 3.5, 1.9]} 
+      rotation={[Math.PI/6, Math.PI/1.7, Math.PI/50]}
+    >
+      {/* Invisible collision mesh for hover detection */}
+      <mesh
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        visible={false}
+      >
+        <boxGeometry args={[0.8, 1.2, 0.8]} />
+        <meshBasicMaterial transparent opacity={0} />
+      </mesh>
+      
+      {/* Actual lander model */}
+      <primitive 
+        object={scene.clone()} 
+        receiveShadow 
+        castShadow 
+      />
+    </group>
   );
 }
+
 
 function Scene() {
   return (
