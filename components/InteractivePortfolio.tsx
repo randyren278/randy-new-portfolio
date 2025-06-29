@@ -1061,7 +1061,18 @@ export default function SimpleEnvironment() {
           isModalOpen={isModalOpen} 
           onAnimationComplete={handleAnimationComplete}
         />
-        <OrbitControls enabled={!isModalOpen} />
+        <OrbitControls 
+          enabled={!isModalOpen}
+          enablePan={false}
+          enableZoom={true}
+          enableRotate={true}
+          zoomSpeed={0.6}
+          rotateSpeed={0.5}
+          minDistance={3}
+          maxDistance={20}
+          maxPolarAngle={Math.PI * 0.75}
+          minPolarAngle={Math.PI * 0.1}
+        />
       </Canvas>
       
       <AboutModal isOpen={isModalOpen} onClose={closeModal} showModal={showModal} />
