@@ -836,7 +836,7 @@ function AboutModal({
               />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Randy Ren</h2>
-            <p className="text-white/70">Software Developer & 3D Enthusiast</p>
+            <p className="text-white/70"></p>
           </div>
 
           {/* Social links */}
@@ -1069,7 +1069,7 @@ export default function SimpleEnvironment() {
           zoomSpeed={0.6}
           rotateSpeed={0.5}
           minDistance={3}
-          maxDistance={20}
+          maxDistance={200}
           maxPolarAngle={Math.PI * 0.75}
           minPolarAngle={Math.PI * 0.1}
         />
