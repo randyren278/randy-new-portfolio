@@ -596,49 +596,24 @@ function LanderFlames() {
 
  function Lander() {
   const { scene } = useGLTF('/models/lander_A.gltf');
-  const groupRef = useRef<THREE.Group | null>(null);
-  const [hovered, setHovered] = useState(false);
+  const meshRef = useRef<THREE.Object3D | null>(null);
   
   useFrame((state) => {
-    if (groupRef.current && hovered) {
-      // Rotate around Y-axis when hovered
-      groupRef.current.rotation.y += 0.01;
+    if (meshRef.current) {
+      // Rotate around Y-axis continuously
+      meshRef.current.rotation.y += 0.01;
     }
   });
   
-  const handlePointerEnter = () => {
-    setHovered(true);
-    document.body.style.cursor = 'pointer';
-  };
-  
-  const handlePointerLeave = () => {
-    setHovered(false);
-    document.body.style.cursor = 'auto';
-  };
-  
   return (
-    <group 
-      ref={groupRef}
+    <primitive 
+      ref={meshRef}
+      object={scene.clone()} 
+      rotation={[Math.PI/6, Math.PI/1.7, Math.PI/50]} 
       position={[1.7, 3.5, 1.9]} 
-      rotation={[Math.PI/6, Math.PI/1.7, Math.PI/50]}
-    >
-      {/* Invisible collision mesh for hover detection */}
-      <mesh
-        onPointerEnter={handlePointerEnter}
-        onPointerLeave={handlePointerLeave}
-        visible={false}
-      >
-        <boxGeometry args={[0.8, 1.2, 0.8]} />
-        <meshBasicMaterial transparent opacity={0} />
-      </mesh>
-      
-      {/* Actual lander model */}
-      <primitive 
-        object={scene.clone()} 
-        receiveShadow 
-        castShadow 
-      />
-    </group>
+      receiveShadow 
+      castShadow 
+    />
   );
 }
 
