@@ -12,6 +12,7 @@
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.2",
     "@react-three/postprocessing": "^3.0.4",
+    "cannon": "^0.6.2",
     "next": "15.3.4",
     "postprocessing": "^6.37.4",
     "react": "^19.0.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/cannon": "^0.1.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
