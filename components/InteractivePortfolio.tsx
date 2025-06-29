@@ -721,7 +721,7 @@ function Lander() {
 function CameraController({ isModalOpen, onAnimationComplete }: { isModalOpen: boolean; onAnimationComplete: (completed: boolean) => void }) {
   const { camera } = useThree();
   const originalPosition = useRef([-7, 3, 7]);
-  const targetPosition = [-12, 12, 12]; // Position to view the floating card
+  const targetPosition = [-11, 11, 11]; // Position to view the floating card
   const animationComplete = useRef(false);
   
   useFrame(() => {
