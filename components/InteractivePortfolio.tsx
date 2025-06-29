@@ -1,8 +1,9 @@
 'use client';
-import React, { Suspense, useRef, useMemo, useEffect, useState } from 'react';
+import React, { Suspense, useRef, useMemo, useEffect, useState, JSX } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
+import { useTexture } from '@react-three/drei';
 
 function TerrainSquare() {
   const { scene } = useGLTF('/models/terrain_low.gltf');
@@ -95,6 +96,37 @@ function Base1() {
   );
 }
 
+function CharacterSoldier() {
+  const { scene, animations } = useGLTF('/models/character-soldier.glb');
+  const soldierRef = useRef<THREE.Group>(null);
+  const { actions } = useAnimations(animations, soldierRef);
+
+  useEffect(() => {
+    if (soldierRef.current) {
+      console.log('Soldier structure:', soldierRef.current);
+    }
+
+    // Play Idle animation if it exists
+    if (actions && actions['idle']) {
+      actions['idle'].reset().fadeIn(0.5).play();
+    } else {
+      console.warn('Idle animation not found. Available animations:', Object.keys(actions));
+    }
+  }, [actions]);
+
+  return (
+    <group
+      ref={soldierRef}
+      scale={[0.85, 0.85, 0.85]}
+      position={[-1.4, 0, 2.1]}
+      rotation={[0, -Math.PI / 3, 0]}
+    >
+      <primitive object={scene} receiveShadow castShadow />
+    </group>
+  );
+}
+
+
 function Slope() {
   const { scene } = useGLTF('/models/terrain_slope_outer_corner.gltf');
   return (
@@ -157,10 +189,30 @@ function RockA () {
   );
 }
 
+function RockC () {
+  const { scene } = useGLTF('/models/rocks_A.gltf');
+  return (
+    <primitive object={scene.clone()} position={[1.5, -0.25, 2]} rotation={[0, Math.PI/2, 0]} receiveShadow castShadow />
+  );
+}
+
 function RockAA () {
   const { scene } = useGLTF('/models/rock_A.gltf');
   return (
     <primitive object={scene.clone()} position={[2.5, -0.1, 1]} receiveShadow castShadow />
+  );
+}
+function RockAB () {
+  const { scene } = useGLTF('/models/rock_A.gltf');
+  return (
+    <primitive object={scene.clone()} position={[-2.5, -0.1, 1.2]} rotation={[0, 2, 0]} receiveShadow castShadow />
+  );
+}
+
+function RockAD () {
+  const { scene } = useGLTF('/models/rock_B.gltf');
+  return (
+    <primitive object={scene.clone()} position={[-2.2, -0.35, 2.1]} rotation={[0, 14, 0]} receiveShadow castShadow />
   );
 }
 
@@ -168,6 +220,13 @@ function RockB () {
   const { scene } = useGLTF('/models/rocks_B.gltf');
   return (
     <primitive object={scene.clone()} rotation={[0, 2, 0]} position={[1.3, -0.1, 0.75]} receiveShadow castShadow />
+  );
+}
+
+function RockD () {
+  const { scene } = useGLTF('/models/rocks_B.gltf');
+  return (
+    <primitive object={scene.clone()} rotation={[0, 24, 0]} position={[-0.8, -0.7, 1.9]} receiveShadow castShadow />
   );
 }
 
@@ -672,6 +731,12 @@ function Scene() {
       <Suspense fallback={null}>
         <Cornertall />
       </Suspense>
+      <Suspense fallback={null}>
+        <RockC />
+      </Suspense>
+      <Suspense fallback={null}>
+        <RockAD />
+      </Suspense>
       {/* Base module */}
       <Suspense fallback={null}>
         <Base1 />
@@ -695,6 +760,16 @@ function Scene() {
       {/* Additional rocks */}
       <Suspense fallback={null}>
         <RockB />
+      </Suspense>
+      <Suspense fallback={null}>
+        <RockAB />
+      </Suspense>
+      <Suspense fallback={null}>
+        <RockD />
+      </Suspense>
+      {/* Character */}
+      <Suspense fallback={null}>
+        <CharacterSoldier />
       </Suspense>
       {/* Space truck trailer */}
       <Suspense fallback={null}>
