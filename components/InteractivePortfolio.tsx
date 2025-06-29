@@ -157,6 +157,13 @@ function RockA () {
   );
 }
 
+function RockAA () {
+  const { scene } = useGLTF('/models/rock_A.gltf');
+  return (
+    <primitive object={scene.clone()} position={[2.5, -0.1, 1]} receiveShadow castShadow />
+  );
+}
+
 function RockB () {
   const { scene } = useGLTF('/models/rocks_B.gltf');
   return (
@@ -735,6 +742,10 @@ function Scene() {
       {/* Lander Flames */}
       <Suspense fallback={null}>
         <LanderFlames />
+      </Suspense>
+      {/* Additional rock */}
+      <Suspense fallback={null}>
+        <RockAA />
       </Suspense>
     </>
   );
