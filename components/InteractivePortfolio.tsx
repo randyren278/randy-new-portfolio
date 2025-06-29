@@ -97,7 +97,7 @@ function Base1() {
 }
 
 function CharacterSoldier() {
-  const { scene, animations } = useGLTF('/models/character-soldier.glb');
+  const { scene, animations } = useGLTF('/models/figurine-cube.glb');
   const soldierRef = useRef<THREE.Group>(null);
   const { actions } = useAnimations(animations, soldierRef);
 
@@ -117,7 +117,7 @@ function CharacterSoldier() {
   return (
     <group
       ref={soldierRef}
-      scale={[0.85, 0.85, 0.85]}
+      scale={[1, 1, 1]}
       position={[-1.4, 0, 2.1]}
       rotation={[0, -Math.PI / 3, 0]}
     >
