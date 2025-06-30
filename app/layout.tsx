@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Head from "next/head";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +16,8 @@ export const metadata: Metadata = {
   title: "🚀",
   icons: {
     icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
   },
 };
 
@@ -27,9 +28,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="icon" href="/images/logo.png" type="image/png" />
-      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
