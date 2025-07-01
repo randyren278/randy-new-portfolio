@@ -196,6 +196,21 @@ export default function WorldFlipperSystem() {
     }, 625); // Change world at 50% of transition (peak zoom out)
   };
 
+  const handleGoToPirateWorld = () => {
+    if (currentWorld !== 'pirate') {
+      // Transition to pirate world first, then show resume modal
+      transitionToWorld('pirate');
+      setTimeout(() => {
+        setModalType('resume');
+        setIsModalOpen(true);
+      }, 3333); // Wait for full transition to complete
+    } else {
+      // Already in pirate world, show resume modal immediately
+      setModalType('resume');
+      setIsModalOpen(true);
+    }
+  };
+
   const handleTransitionComplete = () => {
     setIsTransitioning(false);
   };
@@ -285,6 +300,7 @@ export default function WorldFlipperSystem() {
         onContactClick={handleContactClick}
         onProjectsClick={handleProjectsClick}
         onHomeClick={handleHomeClick}
+        onGoToPirateWorld={handleGoToPirateWorld} 
       />
     </div>
   );

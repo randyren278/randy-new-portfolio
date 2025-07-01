@@ -10,6 +10,20 @@ interface PirateWorldComponentsProps {
   onPirateClick: () => void;
 }
 
+function Grass() {
+    const { scene } = useGLTF('/model_pirate/patch-grass-foliage.glb');
+    return (
+      <primitive 
+        scale={[0.7, 0.7, 0.7]}
+        object={scene.clone()} 
+        position={[PIRATE_POSITION[0], PIRATE_POSITION[1], PIRATE_POSITION[2]]} 
+        rotation={[0, 0, 0]}
+        receiveShadow 
+        castShadow 
+      />
+    );
+  }
+
 function PirateCharacter({ onPirateClick }: { onPirateClick: () => void }) {
   const { scene, animations } = useGLTF('/models/figurine-cube.glb');
   const pirateRef = useRef<THREE.Group>(null);
@@ -45,7 +59,7 @@ function PirateCharacter({ onPirateClick }: { onPirateClick: () => void }) {
     <group
       ref={pirateRef}
       scale={[1, 1, 1]}
-      position={[PIRATE_POSITION[0], PIRATE_POSITION[1], PIRATE_POSITION[2]]}
+      position={[PIRATE_POSITION[0], PIRATE_POSITION[1]+0.14, PIRATE_POSITION[2]]}
       rotation={[0, -Math.PI / 4, 0]}
       onClick={(e) => { e.stopPropagation(); onPirateClick(); }}
       onPointerOver={() => setHovered(true)}
@@ -58,8 +72,10 @@ function PirateCharacter({ onPirateClick }: { onPirateClick: () => void }) {
 
 export default function PirateWorldComponents({ onPirateClick }: PirateWorldComponentsProps) {
   return (
-    <Suspense fallback={null}>
-      <PirateCharacter onPirateClick={onPirateClick} />
-    </Suspense>
+    <><Suspense fallback={null}>
+          <PirateCharacter onPirateClick={onPirateClick} />
+      </Suspense><Suspense fallback={null}>
+              <Grass />
+          </Suspense></>
   );
 }
