@@ -723,7 +723,7 @@ function CameraController({ isModalOpen, onAnimationComplete }: { isModalOpen: b
   
   // Different starting positions for mobile vs desktop
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const originalPosition = useRef<[number, number, number]>(isMobile ? [-10, 3, 10] : [-7, 3, 7]);
+  const originalPosition = useRef<[number, number, number]>(isMobile ? [-10, 5, 10] : [-7, 3, 7]);
   const targetPosition = [-11, 11, 11]; // Position to view the floating card
   const animationComplete = useRef(false);
   
