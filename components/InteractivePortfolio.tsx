@@ -4,6 +4,10 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 import { useTexture } from '@react-three/drei';
+import { FloatingNav } from './ui/floating-navbar';
+import { PortfolioNavbar } from './PortfolioNavbar';
+import CameraReset from './CameraReset';
+
 
 function TerrainSquare() {
   const { scene } = useGLTF('/models/terrain_low.gltf');
@@ -778,6 +782,7 @@ function CameraController({ isModalOpen, onAnimationComplete }: { isModalOpen: b
 
   return null;
 }
+
 function AboutModal({
   isOpen,
   onClose,
@@ -791,9 +796,10 @@ function AboutModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
+      {/* Backdrop - changed from bg-black/60 to match background color */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ backgroundColor: '#1B1919CC' }} // 80% opacity version of #1B1919
         onClick={onClose}
       />
 
@@ -914,7 +920,6 @@ function AboutModal({
   );
 }
 
-
 function Scene({ onSoldierClick, isModalOpen, onAnimationComplete }: { 
   onSoldierClick: () => void; 
   isModalOpen: boolean; 
@@ -1027,7 +1032,6 @@ function Scene({ onSoldierClick, isModalOpen, onAnimationComplete }: {
   );
 }
 
-// Update main component to track animation state
 export default function SimpleEnvironment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -1049,6 +1053,30 @@ export default function SimpleEnvironment() {
     setShowModal(completed);
   };
 
+  // Navbar handlers
+  const handleAboutClick = () => {
+    handleSoldierClick(); // Open the same modal for now
+  };
+
+  const handleContactClick = () => {
+    // You can implement contact functionality here
+    window.open('mailto:me@randyren.org', '_blank');
+  };
+
+  const handleProjectsClick = () => {
+    // You can implement projects functionality here
+    console.log('Projects clicked - implement your projects view');
+  };
+
+  const handleHomeClick = () => {
+    // Reset camera to home position
+    if (isModalOpen) {
+      closeModal();
+    }
+    // Reset camera position by dispatching a custom event
+    window.dispatchEvent(new CustomEvent('resetCamera'));
+  };
+
   return (
     <div className="h-screen w-full relative" style={{ backgroundColor: '#1B1919' }}>
       <Canvas
@@ -1056,12 +1084,13 @@ export default function SimpleEnvironment() {
         shadows
         gl={{ antialias: true }}
       >
-        <Scene 
-          onSoldierClick={handleSoldierClick} 
-          isModalOpen={isModalOpen} 
+        <Scene
+          onSoldierClick={handleSoldierClick}
+          isModalOpen={isModalOpen}
           onAnimationComplete={handleAnimationComplete}
         />
-        <OrbitControls 
+        <CameraReset />
+        <OrbitControls
           enabled={!isModalOpen}
           enablePan={false}
           enableZoom={true}
@@ -1074,13 +1103,17 @@ export default function SimpleEnvironment() {
           minPolarAngle={Math.PI * 0.1}
         />
       </Canvas>
-      
+
       <AboutModal isOpen={isModalOpen} onClose={closeModal} showModal={showModal} />
       
-      {/* Instruction overlay */}
-      <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-lg p-3 text-white text-sm border border-white/20">
-        <p>💡 Click on the blue figurine to connect!</p>
-      </div>
+
+      {/* Add the floating navbar */}
+      <PortfolioNavbar
+        onAboutClick={handleAboutClick}
+        onContactClick={handleContactClick}
+        onProjectsClick={handleProjectsClick}
+        onHomeClick={handleHomeClick}
+      />
     </div>
   );
 }
