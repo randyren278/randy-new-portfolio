@@ -40,7 +40,7 @@ export function AboutModal({ isOpen, onClose, showModal }: ModalProps) {
               <img src="/images/avatar.jpeg" alt="Randy Ren" className="w-full h-full rounded-full object-cover" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Randy Ren</h2>
-            <p className="text-white/70">Space Base Commander</p>
+            <p className="text-white/70"></p>
           </div>
 
           <div className="space-y-3">
@@ -119,24 +119,32 @@ export function ResumeModal({ isOpen, onClose, showModal }: ModalProps) {
               <span className="text-2xl">🏴‍☠️</span>
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Randy's Resume</h2>
-            <p className="text-white/70">Resume & Professional Experience</p>
+            <p className="text-white/70"></p>
           </div>
 
           <div className="space-y-4">
             <div className="bg-white/2 rounded-xl p-4 border border-white/10">
               <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
-                🗺️ Professional Experience
+                🗺️ Experience
               </h3>
               <div className="space-y-3 text-white/70 text-sm">
                 <div className="border-l-2 border-white/20 pl-3">
-                  <div className="font-medium text-white">Senior Software Engineer</div>
-                  <div className="text-white/60">Company Name • 2023 - Present</div>
-                  <div className="mt-1">Led development of scalable web applications using React, TypeScript, and Node.js...</div>
+                  <div className="font-medium text-white">Project Management</div>
+                  <div className="text-white/60">Ledcor</div>
+                  <div className="text-white/50 text-xs mt-1">Vancouver, British Columbia, Canada</div>
+                  <div className="text-white/40 text-xs">• Quality Assurance Engineer</div>
                 </div>
                 <div className="border-l-2 border-white/20 pl-3">
-                  <div className="font-medium text-white">Full Stack Developer</div>
-                  <div className="text-white/60">Previous Company • 2021 - 2023</div>
-                  <div className="mt-1">Built and maintained multiple client projects with modern web technologies...</div>
+                  <div className="font-medium text-white">Software Team</div>
+                  <div className="text-white/60">UBC Rover</div>
+                  <div className="text-white/50 text-xs mt-1">Vancouver, British Columbia, Canada</div>
+                  <div className="text-white/40 text-xs">• Computer Vision</div>
+                </div>
+                <div className="border-l-2 border-white/20 pl-3">
+                  <div className="font-medium text-white">Software Engineering Intern</div>
+                  <div className="text-white/60">Visa</div>
+                  <div className="text-white/50 text-xs mt-1">San Francisco Bay Area</div>
+                  <div className="text-white/40 text-xs">• Financial API development</div>
                 </div>
               </div>
             </div>
@@ -146,7 +154,7 @@ export function ResumeModal({ isOpen, onClose, showModal }: ModalProps) {
                 ⚔️ Skills & Technologies
               </h3>
               <div className="flex flex-wrap gap-2">
-                {['React', 'TypeScript', 'Node.js', 'Three.js', 'Next.js', 'Python', 'PostgreSQL', 'AWS'].map((skill) => (
+                {['Java', 'Python', 'C/C++', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Three.js', 'OpenCV', 'PyTorch', 'SQL', 'GitHub', 'Google Cloud Platform'].map((skill) => (
                   <span key={skill} className="px-3 py-1 bg-white/5 rounded-full text-white/80 text-xs border border-white/10">
                     {skill}
                   </span>
@@ -156,23 +164,20 @@ export function ResumeModal({ isOpen, onClose, showModal }: ModalProps) {
             
             <div className="bg-white/2 rounded-xl p-4 border border-white/10">
               <h3 className="text-white font-semibold mb-2 flex items-center gap-2">
-                🏆 Education & Certifications
+                🏆 Education
               </h3>
               <div className="text-white/70 text-sm space-y-2">
                 <div>
-                  <div className="font-medium text-white">Bachelor of Science in Computer Science</div>
-                  <div className="text-white/60">University Name • 2021</div>
-                </div>
-                <div>
-                  <div className="font-medium text-white">AWS Certified Solutions Architect</div>
-                  <div className="text-white/60">Amazon Web Services • 2023</div>
+                  <div className="font-medium text-white">Bachelor of Applied Science in Electrical Engineering</div>
+                  <div className="text-white/60">University of British Columbia • Sep 2023 - Apr 2028</div>
+                  <div className="text-white/50 text-xs">Co-op Program</div>
                 </div>
               </div>
             </div>
 
             <div className="flex gap-3 pt-4">
               <a
-                href="/resume.pdf"
+                href="/resume/resume.pdf"
                 target="_blank"
                 className="flex-1 bg-white/5 hover:bg-white/10 rounded-xl p-3 text-center text-white font-medium transition-all duration-200 border border-white/10 hover:border-white/20"
               >

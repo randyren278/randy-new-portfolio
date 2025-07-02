@@ -12,103 +12,111 @@ import * as THREE from 'three';
 export type WorldFocus = 'spacebase' | 'pirate';
 
 // Camera Zoom Transition Controller
+// Camera Zoom Transition Controller
 function CameraZoomController({ 
-  isTransitioning, 
-  currentWorld,
-  onTransitionComplete,
-  isModalOpen,
-  onAnimationComplete
-}: { 
-  isTransitioning: boolean;
-  currentWorld: WorldFocus;
-  onTransitionComplete: () => void;
-  isModalOpen: boolean;
-  onAnimationComplete: (completed: boolean) => void;
-}) {
-  const { camera } = useThree();
-  const transitionProgress = useRef(0);
-  const isTransitioningRef = useRef(false);
-  const modalAnimationComplete = useRef(false);
-
-  useEffect(() => {
-    if (isTransitioning && !isTransitioningRef.current) {
-      isTransitioningRef.current = true;
-      transitionProgress.current = 0;
-    }
-  }, [isTransitioning]);
-
-  useFrame(() => {
-    if (isTransitioningRef.current) {
-      // World transition animation
-      transitionProgress.current += 0.01; // Adjust speed here
-
-      if (transitionProgress.current >= 1) {
-        // Transition complete
-        isTransitioningRef.current = false;
+    isTransitioning, 
+    currentWorld,
+    onTransitionComplete,
+    isModalOpen,
+    onAnimationComplete
+  }: { 
+    isTransitioning: boolean;
+    currentWorld: WorldFocus;
+    onTransitionComplete: () => void;
+    isModalOpen: boolean;
+    onAnimationComplete: (completed: boolean) => void;
+  }) {
+    const { camera } = useThree();
+    const transitionProgress = useRef(0);
+    const isTransitioningRef = useRef(false);
+    const modalAnimationComplete = useRef(false);
+  
+    // Helper function to get responsive camera position
+    const getResponsiveCameraPosition = (): [number, number, number] => {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+      return isMobile ? [-10, 3, 10] : [-7, 3, 7];
+    };
+  
+    useEffect(() => {
+      if (isTransitioning && !isTransitioningRef.current) {
+        isTransitioningRef.current = true;
         transitionProgress.current = 0;
-        // Return to normal position
-        const normalPosition: [number, number, number] = [-7, 3, 7];
-        camera.position.set(...normalPosition);
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
-        onTransitionComplete();
-        return;
       }
-
-      const progress = transitionProgress.current;
-      
-      if (progress <= 0.5) {
-        // First half: zoom out to far position
-        const zoomProgress = progress * 2; // 0 to 1
-        const easeOut = 1 - Math.pow(1 - zoomProgress, 2); // Ease out for smooth deceleration
-        const startPos = [-7, 3, 7];
-        const farPos = [-200, 203, 200];
+    }, [isTransitioning]);
+  
+    useFrame(() => {
+      if (isTransitioningRef.current) {
+        // World transition animation
+        transitionProgress.current += 0.01; // Adjust speed here
+  
+        if (transitionProgress.current >= 1) {
+          // Transition complete
+          isTransitioningRef.current = false;
+          transitionProgress.current = 0;
+          // Return to responsive normal position
+          const normalPosition = getResponsiveCameraPosition();
+          camera.position.set(...normalPosition);
+          camera.lookAt(new THREE.Vector3(0, 0, 0));
+          onTransitionComplete();
+          return;
+        }
+  
+        const progress = transitionProgress.current;
         
-        camera.position.x = THREE.MathUtils.lerp(startPos[0], farPos[0], easeOut);
-        camera.position.y = THREE.MathUtils.lerp(startPos[1], farPos[1], easeOut);
-        camera.position.z = THREE.MathUtils.lerp(startPos[2], farPos[2], easeOut);
+        if (progress <= 0.5) {
+          // First half: zoom out to far position
+          const zoomProgress = progress * 2; // 0 to 1
+          const easeOut = 1 - Math.pow(1 - zoomProgress, 2); // Ease out for smooth deceleration
+          const startPos = getResponsiveCameraPosition();
+          const farPos = [-200, 203, 200];
+          
+          camera.position.x = THREE.MathUtils.lerp(startPos[0], farPos[0], easeOut);
+          camera.position.y = THREE.MathUtils.lerp(startPos[1], farPos[1], easeOut);
+          camera.position.z = THREE.MathUtils.lerp(startPos[2], farPos[2], easeOut);
+        } else {
+          // Second half: zoom back in from far position
+          const zoomProgress = (progress - 0.5) * 2; // 0 to 1
+          const easeIn = Math.pow(zoomProgress, 2); // Ease in for smooth acceleration
+          const farPos = [-200, 203, 200];
+          const endPos = getResponsiveCameraPosition();
+      
+          camera.position.x = THREE.MathUtils.lerp(farPos[0], endPos[0], easeIn);
+          camera.position.y = THREE.MathUtils.lerp(farPos[1], endPos[1], easeIn);
+          camera.position.z = THREE.MathUtils.lerp(farPos[2], endPos[2], easeIn);
+        }
+        
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+      } else if (isModalOpen) {
+        // Modal camera animation - use responsive positioning
+        const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+        const modalPosition = isMobile ? [-12, 10, 12] : [-8, 8, 8];
+        camera.position.lerp({ x: modalPosition[0], y: modalPosition[1], z: modalPosition[2] }, 0.03);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        
+        const distance = camera.position.distanceTo(new THREE.Vector3(...modalPosition));
+        const threshold = isMobile ? 3 : 2;
+        if (distance < threshold && !modalAnimationComplete.current) {
+          modalAnimationComplete.current = true;
+          onAnimationComplete(true);
+        }
       } else {
-        // Second half: zoom back in from far position
-        const zoomProgress = (progress - 0.5) * 2; // 0 to 1
-        const easeIn = Math.pow(zoomProgress, 2); // Ease in for smooth acceleration
-        const farPos = [-200, 203, 200];
-        const endPos = [-7, 3, 7];
-    
-        camera.position.x = THREE.MathUtils.lerp(farPos[0], endPos[0], easeIn);
-        camera.position.y = THREE.MathUtils.lerp(farPos[1], endPos[1], easeIn);
-        camera.position.z = THREE.MathUtils.lerp(farPos[2], endPos[2], easeIn);
-      }
-      
-      camera.lookAt(new THREE.Vector3(0, 0, 0));
-    } else if (isModalOpen) {
-      // Modal camera animation
-      const modalPosition = [-8, 8, 8];
-      camera.position.lerp({ x: modalPosition[0], y: modalPosition[1], z: modalPosition[2] }, 0.03);
-      camera.lookAt(new THREE.Vector3(0, 0, 0));
-      
-      const distance = camera.position.distanceTo(new THREE.Vector3(...modalPosition));
-      if (distance < 2 && !modalAnimationComplete.current) {
-        modalAnimationComplete.current = true;
-        onAnimationComplete(true);
-      }
-    } else {
-      // Return from modal
-      if (modalAnimationComplete.current) {
-        const normalPosition = [-7, 3, 7];
-        camera.position.lerp({ x: normalPosition[0], y: normalPosition[1], z: normalPosition[2] }, 0.03);
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
-        
-        const distance = camera.position.distanceTo(new THREE.Vector3(...normalPosition));
-        if (distance < 0.5) {
-          modalAnimationComplete.current = false;
-          onAnimationComplete(false);
+        // Return from modal - use responsive positioning
+        if (modalAnimationComplete.current) {
+          const normalPosition = getResponsiveCameraPosition();
+          camera.position.lerp({ x: normalPosition[0], y: normalPosition[1], z: normalPosition[2] }, 0.03);
+          camera.lookAt(new THREE.Vector3(0, 0, 0));
+          
+          const distance = camera.position.distanceTo(new THREE.Vector3(...normalPosition));
+          if (distance < 0.5) {
+            modalAnimationComplete.current = false;
+            onAnimationComplete(false);
+          }
         }
       }
-    }
-  });
-
-  return null;
-}
-
+    });
+  
+    return null;
+  }
 // Simple lighting that works for both worlds
 function UniversalLighting() {
   return (
