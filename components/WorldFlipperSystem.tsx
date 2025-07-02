@@ -12,111 +12,115 @@ import * as THREE from 'three';
 export type WorldFocus = 'spacebase' | 'pirate';
 
 // Camera Zoom Transition Controller
-// Camera Zoom Transition Controller
 function CameraZoomController({ 
-    isTransitioning, 
-    currentWorld,
-    onTransitionComplete,
-    isModalOpen,
-    onAnimationComplete
-  }: { 
-    isTransitioning: boolean;
-    currentWorld: WorldFocus;
-    onTransitionComplete: () => void;
-    isModalOpen: boolean;
-    onAnimationComplete: (completed: boolean) => void;
-  }) {
-    const { camera } = useThree();
-    const transitionProgress = useRef(0);
-    const isTransitioningRef = useRef(false);
-    const modalAnimationComplete = useRef(false);
-  
-    // Helper function to get responsive camera position
-    const getResponsiveCameraPosition = (): [number, number, number] => {
-      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-      return isMobile ? [-10, 3, 10] : [-7, 3, 7];
-    };
-  
-    useEffect(() => {
-      if (isTransitioning && !isTransitioningRef.current) {
-        isTransitioningRef.current = true;
+  isTransitioning, 
+  currentWorld,
+  onTransitionComplete,
+  isModalOpen,
+  onAnimationComplete
+}: { 
+  isTransitioning: boolean;
+  currentWorld: WorldFocus;
+  onTransitionComplete: () => void;
+  isModalOpen: boolean;
+  onAnimationComplete: (completed: boolean) => void;
+}) {
+  const { camera } = useThree();
+  const transitionProgress = useRef(0);
+  const isTransitioningRef = useRef(false);
+  const modalAnimationComplete = useRef(false);
+
+  // Helper function to get responsive camera position
+  const getResponsiveCameraPosition = (): [number, number, number] => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    if (isMobile) {
+      // Different positions for different worlds
+      return currentWorld === 'pirate' ? [-12, 4, 12] : [-10, 3, 10];
+    }
+    return [-7, 3, 7];
+  };
+
+  useEffect(() => {
+    if (isTransitioning && !isTransitioningRef.current) {
+      isTransitioningRef.current = true;
+      transitionProgress.current = 0;
+    }
+  }, [isTransitioning]);
+
+  useFrame(() => {
+    if (isTransitioningRef.current) {
+      // World transition animation
+      transitionProgress.current += 0.01; // Adjust speed here
+
+      if (transitionProgress.current >= 1) {
+        // Transition complete
+        isTransitioningRef.current = false;
         transitionProgress.current = 0;
+        // Return to responsive normal position
+        const normalPosition = getResponsiveCameraPosition();
+        camera.position.set(...normalPosition);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        onTransitionComplete();
+        return;
       }
-    }, [isTransitioning]);
-  
-    useFrame(() => {
-      if (isTransitioningRef.current) {
-        // World transition animation
-        transitionProgress.current += 0.01; // Adjust speed here
-  
-        if (transitionProgress.current >= 1) {
-          // Transition complete
-          isTransitioningRef.current = false;
-          transitionProgress.current = 0;
-          // Return to responsive normal position
-          const normalPosition = getResponsiveCameraPosition();
-          camera.position.set(...normalPosition);
-          camera.lookAt(new THREE.Vector3(0, 0, 0));
-          onTransitionComplete();
-          return;
-        }
-  
-        const progress = transitionProgress.current;
-        
-        if (progress <= 0.5) {
-          // First half: zoom out to far position
-          const zoomProgress = progress * 2; // 0 to 1
-          const easeOut = 1 - Math.pow(1 - zoomProgress, 2); // Ease out for smooth deceleration
-          const startPos = getResponsiveCameraPosition();
-          const farPos = [-200, 203, 200];
-          
-          camera.position.x = THREE.MathUtils.lerp(startPos[0], farPos[0], easeOut);
-          camera.position.y = THREE.MathUtils.lerp(startPos[1], farPos[1], easeOut);
-          camera.position.z = THREE.MathUtils.lerp(startPos[2], farPos[2], easeOut);
-        } else {
-          // Second half: zoom back in from far position
-          const zoomProgress = (progress - 0.5) * 2; // 0 to 1
-          const easeIn = Math.pow(zoomProgress, 2); // Ease in for smooth acceleration
-          const farPos = [-200, 203, 200];
-          const endPos = getResponsiveCameraPosition();
+
+      const progress = transitionProgress.current;
       
-          camera.position.x = THREE.MathUtils.lerp(farPos[0], endPos[0], easeIn);
-          camera.position.y = THREE.MathUtils.lerp(farPos[1], endPos[1], easeIn);
-          camera.position.z = THREE.MathUtils.lerp(farPos[2], endPos[2], easeIn);
-        }
+      if (progress <= 0.5) {
+        // First half: zoom out to far position
+        const zoomProgress = progress * 2; // 0 to 1
+        const easeOut = 1 - Math.pow(1 - zoomProgress, 2); // Ease out for smooth deceleration
+        const startPos = getResponsiveCameraPosition();
+        const farPos = [-200, 203, 200];
         
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
-      } else if (isModalOpen) {
-        // Modal camera animation - use responsive positioning
-        const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-        const modalPosition = isMobile ? [-12, 10, 12] : [-8, 8, 8];
-        camera.position.lerp({ x: modalPosition[0], y: modalPosition[1], z: modalPosition[2] }, 0.03);
-        camera.lookAt(new THREE.Vector3(0, 0, 0));
-        
-        const distance = camera.position.distanceTo(new THREE.Vector3(...modalPosition));
-        const threshold = isMobile ? 3 : 2;
-        if (distance < threshold && !modalAnimationComplete.current) {
-          modalAnimationComplete.current = true;
-          onAnimationComplete(true);
-        }
+        camera.position.x = THREE.MathUtils.lerp(startPos[0], farPos[0], easeOut);
+        camera.position.y = THREE.MathUtils.lerp(startPos[1], farPos[1], easeOut);
+        camera.position.z = THREE.MathUtils.lerp(startPos[2], farPos[2], easeOut);
       } else {
-        // Return from modal - use responsive positioning
-        if (modalAnimationComplete.current) {
-          const normalPosition = getResponsiveCameraPosition();
-          camera.position.lerp({ x: normalPosition[0], y: normalPosition[1], z: normalPosition[2] }, 0.03);
-          camera.lookAt(new THREE.Vector3(0, 0, 0));
-          
-          const distance = camera.position.distanceTo(new THREE.Vector3(...normalPosition));
-          if (distance < 0.5) {
-            modalAnimationComplete.current = false;
-            onAnimationComplete(false);
-          }
+        // Second half: zoom back in from far position
+        const zoomProgress = (progress - 0.5) * 2; // 0 to 1
+        const easeIn = Math.pow(zoomProgress, 2); // Ease in for smooth acceleration
+        const farPos = [-200, 203, 200];
+        const endPos = getResponsiveCameraPosition();
+    
+        camera.position.x = THREE.MathUtils.lerp(farPos[0], endPos[0], easeIn);
+        camera.position.y = THREE.MathUtils.lerp(farPos[1], endPos[1], easeIn);
+        camera.position.z = THREE.MathUtils.lerp(farPos[2], endPos[2], easeIn);
+      }
+      
+      camera.lookAt(new THREE.Vector3(0, 0, 0));
+    } else if (isModalOpen) {
+      // Modal camera animation - use responsive positioning
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+      const modalPosition = isMobile ? [-12, 10, 12] : [-8, 8, 8];
+      camera.position.lerp({ x: modalPosition[0], y: modalPosition[1], z: modalPosition[2] }, 0.03);
+      camera.lookAt(new THREE.Vector3(0, 0, 0));
+      
+      const distance = camera.position.distanceTo(new THREE.Vector3(...modalPosition));
+      const threshold = isMobile ? 3 : 2;
+      if (distance < threshold && !modalAnimationComplete.current) {
+        modalAnimationComplete.current = true;
+        onAnimationComplete(true);
+      }
+    } else {
+      // Return from modal - use responsive positioning
+      if (modalAnimationComplete.current) {
+        const normalPosition = getResponsiveCameraPosition();
+        camera.position.lerp({ x: normalPosition[0], y: normalPosition[1], z: normalPosition[2] }, 0.03);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        
+        const distance = camera.position.distanceTo(new THREE.Vector3(...normalPosition));
+        if (distance < 0.5) {
+          modalAnimationComplete.current = false;
+          onAnimationComplete(false);
         }
       }
-    });
-  
-    return null;
-  }
+    }
+  });
+
+  return null;
+}
+
 // Simple lighting that works for both worlds
 function UniversalLighting() {
   return (
@@ -238,7 +242,9 @@ export default function WorldFlipperSystem() {
   };
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const initialCameraPosition: [number, number, number] = isMobile ? [-10, 3, 10] : [-7, 3, 7];
+  const initialCameraPosition: [number, number, number] = isMobile 
+    ? (currentWorld === 'pirate' ? [-13, 4, 13] : [-10, 3, 10])
+    : [-7, 3, 7];
 
   return (
     <div className="h-screen w-full relative" style={{ backgroundColor: '#1B1919' }}>
@@ -292,26 +298,27 @@ export default function WorldFlipperSystem() {
         <ResumeModal isOpen={isModalOpen} onClose={closeModal} showModal={showModal} />
       )}
       
-      <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-lg p-3 text-white text-sm border border-white/20">
+      <div className="absolute top-4 left-4 bg-white/2 backdrop-blur-md rounded-2xl p-3 text-white/80 text-sm border border-white/10">
         <p>
           {currentWorld === 'spacebase' 
-            ? '🚀 Space Base - Click the blue figurine for contact info!' 
-            : '🏴‍☠️ Pirate Cove - Click the captain for resume!'}
+            ? '🚀 Click the blue figurine for my contact info!' 
+            : '🏴‍☠️ Click the blue figurine for my resume!'}
         </p>
         <p className="text-xs text-white/60 mt-1">
           {isTransitioning ? '🌌 Traveling through space...' : 'Press Home to travel to another world!'}
         </p>
       </div>
       
-        {!isModalOpen && (
+      {/* Only show navbar when modal is not open */}
+      {!isModalOpen && (
         <PortfolioNavbar
-            onAboutClick={handleAboutClick}
-            onContactClick={handleContactClick}
-            onProjectsClick={handleProjectsClick}
-            onHomeClick={handleHomeClick}
-            onGoToPirateWorld={handleGoToPirateWorld} 
+          onAboutClick={handleAboutClick}
+          onContactClick={handleContactClick}
+          onProjectsClick={handleProjectsClick}
+          onHomeClick={handleHomeClick}
+          onGoToPirateWorld={handleGoToPirateWorld} 
         />
-        )}
+      )}
     </div>
   );
 }
