@@ -303,13 +303,15 @@ export default function WorldFlipperSystem() {
         </p>
       </div>
       
-      <PortfolioNavbar
-        onAboutClick={handleAboutClick}
-        onContactClick={handleContactClick}
-        onProjectsClick={handleProjectsClick}
-        onHomeClick={handleHomeClick}
-        onGoToPirateWorld={handleGoToPirateWorld} 
-      />
+        {!isModalOpen && (
+        <PortfolioNavbar
+            onAboutClick={handleAboutClick}
+            onContactClick={handleContactClick}
+            onProjectsClick={handleProjectsClick}
+            onHomeClick={handleHomeClick}
+            onGoToPirateWorld={handleGoToPirateWorld} 
+        />
+        )}
     </div>
   );
 }
