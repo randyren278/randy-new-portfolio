@@ -367,7 +367,7 @@ function PirateCharacter({ onPirateClick }: { onPirateClick: () => void }) {
   return (
     <group
       ref={pirateRef}
-      scale={[1, 1, 1]}
+      scale={[1.2, 1.2, 1.2]}
       position={[PIRATE_POSITION[0], PIRATE_POSITION[1]+0.20, PIRATE_POSITION[2]]}
       rotation={[0, -Math.PI / 4, 0]}      onClick={(e) => { e.stopPropagation(); onPirateClick(); }}
       onPointerOver={() => setHovered(true)}
