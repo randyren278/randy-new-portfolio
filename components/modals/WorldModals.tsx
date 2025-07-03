@@ -129,7 +129,7 @@ export function ResumeModal({ isOpen, onClose, showModal }: ModalProps) {
               </h3>
               <div className="space-y-3 text-white/70 text-sm">
                 <div className="border-l-2 border-white/20 pl-3">
-                  <div className="font-medium text-white">Project Management</div>
+                  <div className="font-medium text-white">Project Management Intern</div>
                   <div className="text-white/60">Ledcor</div>
                   <div className="text-white/50 text-xs mt-1">Vancouver, British Columbia, Canada</div>
                   <div className="text-white/40 text-xs">• Quality Assurance Engineer</div>
