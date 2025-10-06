@@ -197,3 +197,50 @@ export function ResumeModal({ isOpen, onClose, showModal }: ModalProps) {
     </div>
   );
 }
+
+// Project Modal (Castle World)
+export function ProjectModal({ isOpen, onClose, showModal, title, description, linkUrl }: { isOpen: boolean; onClose: () => void; showModal: boolean; title: string; description: string; linkUrl: string; }) {
+  if (!isOpen || !showModal) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ backgroundColor: '#1B1919CC' }}
+        onClick={onClose}
+      />
+      <div
+        className="relative bg-white/2 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl max-w-md w-full transition-all duration-500 ease-out"
+        style={{
+          transform: showModal ? 'scale(1)' : 'scale(0.8)',
+          opacity: showModal ? 1 : 0,
+        }}
+      >
+        <div className="relative p-8">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-white/60 hover:text-white"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <div className="mb-5">
+            <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
+            <p className="text-white/70 text-sm">{description}</p>
+          </div>
+
+          <a
+            href={linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white"
+          >
+            <span>🌐</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
