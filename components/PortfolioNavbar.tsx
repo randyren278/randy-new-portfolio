@@ -50,30 +50,6 @@ export function PortfolioNavbar({
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }),
     },
-    {
-      name: "About",
-      link: "#",
-      icon: <UserIcon />,
-      onClick: onAboutClick || (() => {
-        console.log("About clicked - no handler provided");
-      }),
-    },
-    {
-      name: "Resume",
-      link: "#",
-      icon: <ScrollIcon />,
-      onClick: onGoToPirateWorld || (() => {
-        console.log("Resume/Pirate world clicked - no handler provided");
-      }),
-    },
-    {
-      name: "Contact",
-      link: "#",
-      icon: <MessageIcon />,
-      onClick: onContactClick || (() => {
-        console.log("Contact clicked - no handler provided");
-      }),
-    },
   ];
 
   return <FloatingNav navItems={navItems} alwaysVisible={true} />;

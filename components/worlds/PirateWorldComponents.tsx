@@ -381,31 +381,31 @@ function PirateCharacter({ onPirateClick }: { onPirateClick: () => void }) {
 export default function PirateWorldComponents({ onPirateClick }: PirateWorldComponentsProps) {
   return (
     <Suspense fallback={null}>
-    <PirateCharacter onPirateClick={onPirateClick} />
-    <Sand />
-    <Palm />
-    <Sand1 />
-    <Sand2 />
-    <Sand3 />
-    <Sand4 />
-    <Sand5 />
-    <Grass />
-    <Cannon />
-    <Dock />
-    <Crate />
-    <Flag />
-    <Rock />
-    <Rock2 />
-    <Chest />
-    <Rowboat />
-    <Tower />
-    <Palm2 />
-    <Shipwreck />
-    <Rock3 />
-    <Pirateship />
-    <Bison />
-    
-
+      <group onClick={(e) => { e.stopPropagation(); onPirateClick(); }}>
+        <PirateCharacter onPirateClick={onPirateClick} />
+        <Sand />
+        <Palm />
+        <Sand1 />
+        <Sand2 />
+        <Sand3 />
+        <Sand4 />
+        <Sand5 />
+        <Grass />
+        <Cannon />
+        <Dock />
+        <Crate />
+        <Flag />
+        <Rock />
+        <Rock2 />
+        <Chest />
+        <Rowboat />
+        <Tower />
+        <Palm2 />
+        <Shipwreck />
+        <Rock3 />
+        <Pirateship />
+        <Bison />
+      </group>
     </Suspense>
 );
 }

@@ -788,31 +788,33 @@ function LanderFlames() {
 export default function SpaceBaseComponents({ onSoldierClick }: SpaceBaseComponentsProps) {
   return (
     <Suspense fallback={null}>
-      <TerrainSquare />
-      <StructureLow />
-      <BaseRoof />
-      <Base2 />
-      <Cargobase2 />
-      <Base1 />
-      <CharacterSoldier onSoldierClick={onSoldierClick} />
-      <Slope />
-      <Corners />
-      <Cornertall />
-      <RockA />
-      <RockC />
-      <RockAA />
-      <RockAB />
-      <RockAD />
-      <RockB />
-      <RockD />
-      <Curve />
-      <SpaceTruckLarge />
-      <SpaceTruckSmall />
-      <CargoC />
-      <CargoC1 />
-      <CargoC2 />
-      <Lander />
-      <LanderFlames />
+      <group onClick={(e) => { e.stopPropagation(); onSoldierClick(); }}>
+        <TerrainSquare />
+        <StructureLow />
+        <BaseRoof />
+        <Base2 />
+        <Cargobase2 />
+        <Base1 />
+        <CharacterSoldier onSoldierClick={onSoldierClick} />
+        <Slope />
+        <Corners />
+        <Cornertall />
+        <RockA />
+        <RockC />
+        <RockAA />
+        <RockAB />
+        <RockAD />
+        <RockB />
+        <RockD />
+        <Curve />
+        <SpaceTruckLarge />
+        <SpaceTruckSmall />
+        <CargoC />
+        <CargoC1 />
+        <CargoC2 />
+        <Lander />
+        <LanderFlames />
+      </group>
     </Suspense>
   );
 }

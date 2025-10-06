@@ -301,8 +301,8 @@ export default function WorldFlipperSystem() {
       <div className="absolute top-4 left-4 bg-white/2 backdrop-blur-md rounded-2xl p-3 text-white/80 text-sm border border-white/10">
         <p>
           {currentWorld === 'spacebase' 
-            ? '🚀 Click the blue figurine for my contact info!' 
-            : '🏴‍☠️ Click the blue figurine for my resume!'}
+            ? '🚀 Click anything for my contact info!'
+            : '🏴‍☠️ Click anything for my resume!'}
         </p>
         <p className="text-xs text-white/60 mt-1">
           {isTransitioning ? '🌌 Traveling through space...' : 'Press Home to travel to another world!'}
