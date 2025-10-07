@@ -207,14 +207,14 @@ export default function WorldFlipperSystem() {
 
   // Dummy project data (8 items). We'll skip tile (2, -2) later in Castle component
   const projects = [
-    { id: 0, title: 'Weather App', description: 'A weather app with an intuitive and modern design, featuring real-time updates, 5-day forecast, and much more..', linkUrl: 'https://randy-weather-app.vercel.app' },
+    { id: 0, title: 'Weather App', description: 'A weather app with an intuitive and modern design, featuring real-time updates, 5-day forecast, and much more.', linkUrl: 'https://randy-weather-app.vercel.app' },
     { id: 1, title: 'Facial Recognition', description: 'An application captures images from a webcam, detects faces, and recognizes them from a database.', linkUrl: 'https://github.com/randyren278/computervision' },
     { id: 2, title: '3D-Modeller', description: 'This 3D modeller program allows you to create, manipulate, and view 3D objects in a virtual environment.', linkUrl: 'https://github.com/randyren278/3D-Modeller' },
     { id: 3, title: 'Portfolio', description: 'A fully responsive portfolio site using Next.js, Tailwind CSS, and Framer Motion to showcase projects, resume, and contact information', linkUrl: 'http://randyren.org' },
     { id: 4, title: 'Dissertation on Kuwait', description: 'Exploring the integration of renewable energy into Kuwait\'s desalination sector to reduce dependency on fossil fuels and promote environmental sustainability.', linkUrl: '/Dissertation on Renewable Energy in Kuwait.pdf' },
     { id: 5, title: 'Wordle!', description: 'A popular word guessing game with a built-in solving algorithm.', linkUrl: 'https://randy-eldrow.vercel.app' },
     { id: 6, title: 'Credit Risk Analysis System', description: 'This application is designed to analyze the credit risk of customers. This system leverages a database to store customer data, credit histories, and analysis results.', linkUrl: 'https://github.com/randyren278/CreditRiskAnalysis.git' },
-    { id: 7, title: 'Rservation Management', description: 'A production-ready reservation system built with Next.js and Supabase. Handles customer booking, email confirmations, and admin management', linkUrl: 'https://float30-reservations.vercel.app/' },
+    { id: 7, title: 'Reservation Management', description: 'A production-ready reservation system built with Next.js and Supabase. Handles customer booking, email confirmations, and admin management', linkUrl: 'https://float30-reservations.vercel.app/' },
   ];
 
   const handleProjectSelect = (id: number) => {
