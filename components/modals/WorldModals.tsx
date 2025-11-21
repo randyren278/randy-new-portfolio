@@ -128,11 +128,17 @@ export function ResumeModal({ isOpen, onClose, showModal }: ModalProps) {
                 🗺️ Experience
               </h3>
               <div className="space-y-3 text-white/70 text-sm">
+              <div className="border-l-2 border-white/20 pl-3">
+                  <div className="font-medium text-white">Machine Learning Intern</div>
+                  <div className="text-white/60">Ledcor Technical Services</div>
+                  <div className="text-white/50 text-xs mt-1">Vancouver, British Columbia, Canada</div>
+                  <div className="text-white/40 text-xs">• Vision Models</div>
+                </div>
                 <div className="border-l-2 border-white/20 pl-3">
                   <div className="font-medium text-white">Project Management Intern</div>
                   <div className="text-white/60">Ledcor</div>
                   <div className="text-white/50 text-xs mt-1">Vancouver, British Columbia, Canada</div>
-                  <div className="text-white/40 text-xs">• Quality Assurance Engineer</div>
+                  <div className="text-white/40 text-xs">• Quality Assurance</div>
                 </div>
                 <div className="border-l-2 border-white/20 pl-3">
                   <div className="font-medium text-white">Software Team</div>
@@ -144,7 +150,7 @@ export function ResumeModal({ isOpen, onClose, showModal }: ModalProps) {
                   <div className="font-medium text-white">Software Engineering Intern</div>
                   <div className="text-white/60">Visa</div>
                   <div className="text-white/50 text-xs mt-1">San Francisco Bay Area</div>
-                  <div className="text-white/40 text-xs">• Financial API development</div>
+                  <div className="text-white/40 text-xs">• Fraud Detection</div>
                 </div>
               </div>
             </div>

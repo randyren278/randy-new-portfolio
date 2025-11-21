@@ -157,20 +157,13 @@ function UniversalLighting() {
 
 // Main World Flipper System
 export default function WorldFlipperSystem() {
-  const [currentWorld, setCurrentWorld] = useState<WorldFocus>('spacebase');
+  const [currentWorld, setCurrentWorld] = useState<WorldFocus>('pirate');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<'about' | 'resume' | 'project'>('about');
   const [selectedProject, setSelectedProject] = useState<null | { id: number; title: string; description: string; linkUrl?: string; path?: string }>(null);
   const [isCastleMenuOpen, setIsCastleMenuOpen] = useState(false);
-
-  // Randomly select initial world on load
-  useEffect(() => {
-    const worlds: WorldFocus[] = ['spacebase', 'pirate', 'castle'];
-    const randomWorld = worlds[Math.floor(Math.random() * worlds.length)];
-    setCurrentWorld(randomWorld);
-  }, []);
 
   const handleAboutClick = () => {
     if (currentWorld !== 'spacebase') {
@@ -259,7 +252,7 @@ export default function WorldFlipperSystem() {
 
   const handleHomeClick = () => {
     if (isModalOpen) { closeModal(); return; }
-    const order: WorldFocus[] = ['spacebase', 'pirate', 'castle'];
+    const order: WorldFocus[] = ['pirate', 'spacebase', 'castle'];
     const next = order[(order.indexOf(currentWorld) + 1) % order.length];
     transitionToWorld(next);
   };
