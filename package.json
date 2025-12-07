@@ -15,7 +15,7 @@
     "cannon": "^0.6.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.20.1",
-    "next": "15.3.4",
+    "next": "15.3.6",
     "postprocessing": "^6.37.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
