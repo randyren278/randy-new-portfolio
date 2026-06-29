@@ -16,11 +16,6 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://randyren.org"),
   title: "Randy Ren — Portfolio",
   description: "Randy Ren — building agents and the interfaces around them.",
-  icons: {
-    icon: "/images/favicon.ico",
-    shortcut: "/images/favicon.ico",
-    apple: "/images/favicon.ico",
-  },
   openGraph: {
     title: "Randy Ren — Portfolio",
     description: "Randy Ren — building agents and the interfaces around them.",
