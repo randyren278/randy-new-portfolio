@@ -10,7 +10,7 @@ export type SpritePixel = {
 export const ASTRONAUT_GRID = { cols: 40, rows: 56 } as const;
 
 // Approved mockup: .superpowers/brainstorm/87804-1782696448/content/pixel-art-v3-wordmark.html
-// Variant 2 — "Serif, sage period". 80 pixel rectangles. Do not reorder — later
+// Variant 2 — "Serif, sage period". 81 pixel rectangles. Do not reorder — later
 // entries (highlights / shadows) intentionally paint over earlier ones.
 export const ASTRONAUT_PIXELS: readonly SpritePixel[] = [
   // Antenna
