@@ -71,7 +71,17 @@ export function OgCard() {
           }}
         >
           <span style={{ display: 'flex' }}>Randy</span>
-          <span style={{ display: 'flex', color: PALETTE.sage }}>.</span>
+          <span
+            style={{
+              display: 'flex',
+              color: PALETTE.sage,
+              // Cancel the -14 letterSpacing on this glyph pair so the period
+              // doesn't get pulled into the y's descender.
+              marginLeft: 18,
+            }}
+          >
+            .
+          </span>
         </div>
 
         {/* Footer */}

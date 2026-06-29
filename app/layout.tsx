@@ -12,12 +12,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// iMessage / Slack / etc. strip `og:site_name` from the front of `og:title`
+// when site_name is a prefix, leaving just "Portfolio" rendered above the
+// card image. To suppress that label without also blanking the browser-tab
+// <title>, override only the OG/Twitter titles with an invisible string
+// (U+200E LEFT-TO-RIGHT MARK + a regular space). Unfurls render this as
+// effectively empty; the card image carries all the visible identity.
+const INVISIBLE_TITLE = "‎ ";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://randyren.org"),
   title: "Randy Ren — Portfolio",
   description: "Randy Ren — building agents and the interfaces around them.",
   openGraph: {
-    title: "Randy Ren — Portfolio",
+    title: INVISIBLE_TITLE,
     description: "Randy Ren — building agents and the interfaces around them.",
     url: "https://randyren.org",
     siteName: "Randy Ren",
@@ -25,7 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Randy Ren — Portfolio",
+    title: INVISIBLE_TITLE,
     description: "Randy Ren — building agents and the interfaces around them.",
   },
 };
