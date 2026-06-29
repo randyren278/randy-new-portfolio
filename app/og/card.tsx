@@ -64,7 +64,7 @@ export function OgCard() {
             display: 'flex',
             fontFamily: 'Playfair Display',
             fontWeight: 500,
-            fontSize: 240,
+            fontSize: 200,
             lineHeight: 0.9,
             letterSpacing: -14,
             color: PALETTE.fg,
